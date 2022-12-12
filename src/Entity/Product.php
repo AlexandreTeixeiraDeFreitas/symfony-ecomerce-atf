@@ -39,9 +39,13 @@ class Product
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
     private Collection $Favorites;
 
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Cart::class)]
+    private Collection $carts;
+
     public function __construct()
     {
         $this->Favorites = new ArrayCollection();
+        $this->carts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,6 +159,36 @@ class Product
     {
         if ($this->Favorites->removeElement($favorite)) {
             $favorite->removeFavorite($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cart>
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
+    public function addCart(Cart $cart): self
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts->add($cart);
+            $cart->setProducts($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->removeElement($cart)) {
+            // set the owning side to null (unless already changed)
+            if ($cart->getProducts() === $this) {
+                $cart->setProducts(null);
+            }
         }
 
         return $this;
