@@ -42,10 +42,20 @@ class Product
     #[ORM\OneToMany(mappedBy: 'products', targetEntity: Cart::class)]
     private Collection $carts;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?Category $category = null;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?Brand $brand = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Cartproducts::class)]
+    private Collection $cartproducts;
+
     public function __construct()
     {
         $this->Favorites = new ArrayCollection();
         $this->carts = new ArrayCollection();
+        $this->cartproducts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -188,6 +198,60 @@ class Product
             // set the owning side to null (unless already changed)
             if ($cart->getProducts() === $this) {
                 $cart->setProducts(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getBrand(): ?Brand
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?Brand $brand): self
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cartproducts>
+     */
+    public function getCartproducts(): Collection
+    {
+        return $this->cartproducts;
+    }
+
+    public function addCartproduct(Cartproducts $cartproduct): self
+    {
+        if (!$this->cartproducts->contains($cartproduct)) {
+            $this->cartproducts->add($cartproduct);
+            $cartproduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartproduct(Cartproducts $cartproduct): self
+    {
+        if ($this->cartproducts->removeElement($cartproduct)) {
+            // set the owning side to null (unless already changed)
+            if ($cartproduct->getProduct() === $this) {
+                $cartproduct->setProduct(null);
             }
         }
 
