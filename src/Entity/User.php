@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -50,16 +51,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $createAt = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToMany(targetEntity: product::class, inversedBy: 'Favorites')]
     private Collection $favorites;
 
+    #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Product::class)]
+    private Collection $products;
+
     public function __construct()
     {
-        // $createAt = 
+        $this->createAt = new DateTimeImmutable();
         $this->favorites = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -248,6 +253,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeFavorite(product $favorite): self
     {
         $this->favorites->removeElement($favorite);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setSeller($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getSeller() === $this) {
+                $product->setSeller(null);
+            }
+        }
 
         return $this;
     }

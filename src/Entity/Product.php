@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use DateTimeImmutable;
+// use Doctrine\Common\Collections\DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -51,11 +53,24 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Cartproducts::class)]
     private Collection $cartproducts;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $creatAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updateAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?User $seller = null;
+
     public function __construct()
     {
         $this->Favorites = new ArrayCollection();
         $this->carts = new ArrayCollection();
         $this->cartproducts = new ArrayCollection();
+        $this->creatAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -254,6 +269,54 @@ class Product
                 $cartproduct->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatAt(): ?\DateTimeImmutable
+    {
+        return $this->creatAt;
+    }
+
+    public function setCreatAt(\DateTimeImmutable $creatAt): self
+    {
+        $this->creatAt = $creatAt;
+
+        return $this;
+    }
+
+    public function getUpdateAt(): ?\DateTimeImmutable
+    {
+        return $this->updateAt;
+    }
+
+    public function setUpdateAt(?\DateTimeImmutable $updateAt): self
+    {
+        $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getSeller(): ?User
+    {
+        return $this->seller;
+    }
+
+    public function setSeller(?User $seller): self
+    {
+        $this->seller = $seller;
 
         return $this;
     }
