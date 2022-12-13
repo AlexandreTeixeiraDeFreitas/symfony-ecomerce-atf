@@ -3,7 +3,35 @@
 {% block title %}Product{% endblock %}
 
 {% block body %}
-    <h1>Product</h1>
+    <h1>{{ product.name }}</h1>
+
+    <div class=" w3-container w3-margin-top" style="width:50%; display: block; margin-left: auto; margin-right: auto;">
+        <div class="w3-card-4">
+
+        {# <header class="w3-container w3-teal">
+        <h1>{{ product.name }}</h1>
+        </header> #}
+
+        <div class="w3-container" >
+        <img class="w3-border" style="width:100%" src="{{asset(product.image)}}" alt="{{ product.name }}">
+        <p><strong>le résumer: </strong>{{ product.expcerpt }}</p>
+        <p><strong>le prix: </strong>{{ product.price }}</p>
+        <p><strong>description: </strong>{{ product.description }}</p>
+        <p><strong>Quantity: </strong>{{ product.quantity }}</p>
+        <p><strong>Sold: </strong>{{ product.sold }}</p>
+        <p><strong>Price: </strong>{{ product.price }}</p>
+        <p><strong>Statut: </strong>{{ product.statut }}</p>
+        <p><strong>Créer: </strong>{{ product.creatAt ? product.creatAt|date('Y-m-d H:i:s') : '' }}</p>
+        <p><strong>Modifier: </strong>{{ product.updateAt ? product.updateAt|date('Y-m-d H:i:s') : '' }}</p>
+        </div>
+
+        <footer class="w3-container w3-teal">
+            <a class="w3-button" href="{{ path('app_product_index') }}">back</a>
+            <a class="w3-button" href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+        </footer>
+
+        </div>
+    </div>
 
     <table class="table">
         <tbody>

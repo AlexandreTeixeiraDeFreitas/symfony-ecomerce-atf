@@ -5,19 +5,41 @@
 {% block body %}
     <h1>Product index</h1>
 
+    <div class="w3-row">
+       {% for product in products %}
+            <div class="w3-third w3-container w3-margin-top  ">
+                <div class="w3-card-4">
+
+                <header class="w3-container w3-teal">
+                <h1>{{ product.name }}</h1>
+                </header>
+
+                <div class="w3-container">
+                <img class="w3-border" style="width:100%" src="{{asset(product.image)}}" alt="{{ product.name }}">
+                <p>{{ product.expcerpt }}</p>
+                <p>le prix: {{ product.price }}</p>
+                </div>
+
+                <footer class="w3-container w3-teal">
+                    <a class="w3-button" href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
+                    <a class="w3-button" href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                </footer>
+
+                </div>
+            </div>
+        {% else %}
+            <div class="w3-third w3-container ">
+                <td colspan="12">no records found</td>
+            </div>
+        {% endfor %}
+    </div>
+
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Expcerpt</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Sold</th>
                 <th>Price</th>
-                <th>Statut</th>
-                <th>CreatAt</th>
-                <th>UpdateAt</th>
                 <th>Image</th>
                 <th>actions</th>
             </tr>
@@ -25,16 +47,11 @@
         <tbody>
         {% for product in products %}
             <tr>
-                <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.expcerpt }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.quantity }}</td>
-                <td>{{ product.sold }}</td>
                 <td>{{ product.price }}</td>
-                <td>{{ product.statut }}</td>
-                <td>{{ product.creatAt ? product.creatAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ product.updateAt ? product.updateAt|date('Y-m-d H:i:s') : '' }}</td>
+                {# <td>{{ product.creatAt ? product.creatAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ product.updateAt ? product.updateAt|date('Y-m-d H:i:s') : '' }}</td> #}
                 <td>{{ product.image }}</td>
                 <td>
                     <a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
@@ -49,5 +66,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_product_new') }}">Create new</a>
+    <a class="w3-button w3-teal" href="{{ path('app_product_new') }}">+</a>
 {% endblock %}

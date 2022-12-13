@@ -21,40 +21,45 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
+            ->add('name', TextareaType::class, [
+                'attr' => ['class' => 'w3-input'],
+                ])
             ->add('expcerpt', TextareaType::class, [
-                'attr' => ['class' => 'tinymce'],
+                'attr' => ['class' => 'w3-input'],
                 ])
             ->add('description', TextareaType::class, [
-                'attr' => ['class' => 'tinymce'],
+                'attr' => ['class' => 'w3-input'],
                 ])
             ->add('quantity', IntegerType::class, [
-                'attr' => ['class' => 'tinymce'],
+                'attr' => ['class' => 'w3-input'],
                 ])
             // ->add('sold')
             ->add('price', NumberType::class, [
-                'attr' => ['class' => 'tinymce'],
+                'attr' => ['class' => 'w3-input'],
                 ])
             ->add('statut', IntegerType::class, [
-                'attr' => ['class' => 'tinymce'],
+                'attr' => ['class' => 'w3-input'],
                 ])  
             // ->add('creatAt')
             // ->add('updateAt')
             ->add('image', TextType::class, [
-                'attr' => ['class' => 'tinymce'],
+                'attr' => ['class' => 'w3-input'],
                 ])
             // ->add('Favorites')
             ->add('category', EntityType::class,[
                 'class' => Category::class,
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'attr' => ['class' => 'w3-select'],
             ])
             ->add('brand', EntityType::class,[
                 'class' => Brand::class,
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'attr' => ['class' => 'w3-select'],
             ])
             ->add('seller', EntityType::class,[
                 'class' => User::class,
-                'choice_label' => 'lastname'
+                'choice_label' => 'lastname',
+                'attr' => ['class' => 'w3-select'],
             ])
         ;
     }
