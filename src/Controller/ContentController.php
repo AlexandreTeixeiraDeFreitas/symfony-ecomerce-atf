@@ -29,17 +29,27 @@ class ContentController extends AbstractController
         $form = $this->createForm(FiltreType::class, $filtre);
         $form->handleRequest($request);
         $name = $form->getData()->getName();
+        $seller = $form->getData()->getSeller();
+        $category = $form->getData()->getCategory();
+        var_dump($category);
+        var_dump($seller);
+        $brand = $form->getData()->getBrand();
         if ($form->isSubmitted() && $form->isValid()) {
         }
         // return $this->render('content/product/index.html.twig', [
         //     'products' => $productRepository->findAll(),
         // ]);  
-        if ($name == NULL){
-            $filtre = $productRepository->findAll();
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($name == NULL && $seller == NULL && $category == NULL && $brand == NULL){
+                $filtre = $productRepository->findAll();
+            }else{
+                // $filtre = $productRepository->findProduct($name, $seller, $category, $brand);
+                // $filtre = $productRepository->findAll();
+                $filtre = $productRepository->findProduct($category);
+            }
         }else{
-            // $article = $productRepository->findArticle($titre, $user, $statut);
+            $filtre = $productRepository->findAll();
         }
-
         return $this->renderForm('content/product/index.html.twig', [
             'products' => $filtre,
             'form' => $form,

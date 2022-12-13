@@ -63,4 +63,81 @@ class ProductRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+// public function findProduct($name, $seller, $category, $brand): array
+// {
+//      if ($name != NULL && $seller != NULL && $category != NULL && $brand != NULL){
+//          return $this->createQueryBuilder('a')
+//              ->andWhere('a.name LIKE :val')
+//              ->andWhere('a.seller = :val1')
+//              ->andWhere('a.category = :val2')
+//              ->setParameter('val', "%" . $name . "%")
+//              ->setParameter('val1', $seller)
+//              ->setParameter('val2', $category)
+//              ->getQuery()
+//              ->getResult()
+//          ;
+//      }elseif($name == NULL && $seller != NULL && $category != NULL){
+         
+//          return $this->createQueryBuilder('a')
+//              ->andWhere('a.seller = :val1')
+//              ->andWhere('a.category = :val2')
+//              ->setParameter('val1', $seller)
+//              ->setParameter('val2', $category)
+//              ->getQuery()
+//              ->getResult()
+//          ;
+//      }elseif($name == NULL && $seller == NULL && $category != NULL){
+//          return $this->createQueryBuilder('a')
+//              ->andWhere('a.category = :val2')
+//              ->setParameter('val2', $category)
+//              ->getQuery()
+//              ->getResult()
+//          ;
+//      }elseif($name == NULL && $seller != NULL && $category == NULL){
+//          return $this->createQueryBuilder('a')
+//          ->andWhere('a.seller = :val1')
+//          ->setParameter('val1', $seller)
+//          ->getQuery()
+//          ->getResult()
+//      ; 
+//      }elseif($name != NULL && $seller == NULL && $category == NULL){
+//          return $this->createQueryBuilder('a')
+//              ->andWhere('a.name LIKE :val')
+//              ->setParameter('val', "%" . $name . "%")
+//              ->getQuery()
+//              ->getResult()
+//          ;
+//      }elseif($name != NULL && $seller == NULL && $category != NULL){
+//          return $this->createQueryBuilder('a')
+//              ->andWhere('a.name LIKE :val')
+//              ->setParameter('val', "%" . $name . "%")
+//              ->andWhere('a.category = :val2')
+//              ->setParameter('val2', $category)
+//              ->getQuery()
+//              ->getResult()
+//          ;
+//      }elseif($name != NULL && $seller != NULL && $category == NULL){
+//          return $this->createQueryBuilder('a')
+//              ->andWhere('a.name LIKE :val')
+//              ->setParameter('val', "%" . $name . "%")
+//              ->andWhere('a.seller = :val1')
+//              ->setParameter('val1', $seller)
+//              ->getQuery()
+//              ->getResult()
+//          ;
+//      }
+// }
+    public function findProduct($category): array
+    {
+        var_dump($category);
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.category = :val')
+            ->setParameter('val', $category)
+            // ->orderBy('p.category', 'ASC')
+            // ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

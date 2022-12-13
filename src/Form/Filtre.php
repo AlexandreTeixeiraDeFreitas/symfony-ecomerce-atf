@@ -22,19 +22,6 @@ class FiltreType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('price', NumberType::class, [
-                'attr' => ['class' => 'w3-input'],
-                'required' => false,
-                ])
-            ->add('statut', ChoiceType::class, [
-                'choices'  => [
-                    'Choix' => NULL,
-                    '0' => '0',
-                    '1' => '1',
-                ],
-                'attr' => ['class' => 'w3-select'],
-                'required' => false,
-            ])
             ->add('category', EntityType::class,[
                 'class' => Category::class,
                 'choice_label' => 'name',

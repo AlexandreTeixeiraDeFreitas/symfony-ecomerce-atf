@@ -54,7 +54,7 @@ class ActionController extends AbstractController
 
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
-
+        
         return $this->renderForm('content/product/edit.html.twig', [
             'product' => $product,
             'form' => $form,

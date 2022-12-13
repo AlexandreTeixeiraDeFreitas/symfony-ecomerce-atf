@@ -8,6 +8,7 @@
         {{ form_widget(form) }}
         <button class="btn w3-btn w3-blue-grey">{{ button_label|default('Shearch') }}</button>
     {{ form_end(form) }}
+    {{ dump(form.vars.value)}}
     <div class="w3-row">
        {% for product in products %}
             <div class="w3-third w3-container w3-margin-top  ">
