@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\FiltreType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,12 +22,29 @@ class ContentController extends AbstractController
         ]);
     }
 
-    #[Route('/product', name: 'app_product_index', methods: ['GET'])]
-    public function indexproduct(ProductRepository $productRepository): Response
+    #[Route('/product', name: 'app_product_index', methods: ['GET', 'POST'])]
+    public function indexproduct(Request $request, ProductRepository $productRepository): Response
     {
-        return $this->render('content/product/index.html.twig', [
-            'products' => $productRepository->findAll(),
+        $filtre = new Product();
+        $form = $this->createForm(FiltreType::class, $filtre);
+        $form->handleRequest($request);
+        $name = $form->getData()->getName();
+        if ($form->isSubmitted() && $form->isValid()) {
+        }
+        // return $this->render('content/product/index.html.twig', [
+        //     'products' => $productRepository->findAll(),
+        // ]);  
+        if ($name == NULL){
+            $filtre = $productRepository->findAll();
+        }else{
+            // $article = $productRepository->findArticle($titre, $user, $statut);
+        }
+
+        return $this->renderForm('content/product/index.html.twig', [
+            'products' => $filtre,
+            'form' => $form,
         ]);
+
     }
 
     #[Route('/product/{id}', name: 'app_product_show', methods: ['GET'])]

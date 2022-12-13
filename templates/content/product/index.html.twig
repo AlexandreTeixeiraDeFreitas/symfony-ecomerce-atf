@@ -4,7 +4,10 @@
 
 {% block body %}
     <h1>Product index</h1>
-
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn w3-btn w3-blue-grey">{{ button_label|default('Shearch') }}</button>
+    {{ form_end(form) }}
     <div class="w3-row">
        {% for product in products %}
             <div class="w3-third w3-container w3-margin-top  ">

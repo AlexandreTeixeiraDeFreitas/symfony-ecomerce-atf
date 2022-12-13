@@ -11,55 +11,47 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use PhpParser\Builder\Class_;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductType extends AbstractType
+class FiltreType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
-                'attr' => ['class' => 'w3-input'],
-                ])
-            ->add('expcerpt', TextareaType::class, [
-                'attr' => ['class' => 'w3-input'],
-                ])
-            ->add('description', TextareaType::class, [
-                'attr' => ['class' => 'w3-input'],
-                ])
-            ->add('quantity', IntegerType::class, [
-                'attr' => ['class' => 'w3-input'],
-                ])
-            // ->add('sold')
             ->add('price', NumberType::class, [
                 'attr' => ['class' => 'w3-input'],
+                'required' => false,
                 ])
-            ->add('statut', IntegerType::class, [
-                'attr' => ['class' => 'w3-input'],
-                ])  
-            // ->add('creatAt')
-            // ->add('updateAt')
-            ->add('image', TextType::class, [
-                'attr' => ['class' => 'w3-input'],
-                ])
-            // ->add('Favorites')
+            ->add('statut', ChoiceType::class, [
+                'choices'  => [
+                    'Choix' => NULL,
+                    '0' => '0',
+                    '1' => '1',
+                ],
+                'attr' => ['class' => 'w3-select'],
+                'required' => false,
+            ])
             ->add('category', EntityType::class,[
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'attr' => ['class' => 'w3-select'],
+                'required' => false,
             ])
             ->add('brand', EntityType::class,[
                 'class' => Brand::class,
                 'choice_label' => 'name',
                 'attr' => ['class' => 'w3-select'],
+                'required' => false,
             ])
             ->add('seller', EntityType::class,[
                 'class' => User::class,
                 'choice_label' => 'lastname',
                 'attr' => ['class' => 'w3-select'],
+                'required' => false,
             ])
         ;
     }
