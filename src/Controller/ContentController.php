@@ -72,8 +72,8 @@ class ContentController extends AbstractController
         // var_dump($cp);
         $cartProduct = new Cartproducts(); 
         $cartProduct->setCart($cart);
-        $form = $this->createForm(AddCartType::class, $cartProduct);
-        $form->handleRequest($request);
+            $form = $this->createForm(AddCartType::class, $cartProduct);
+            $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $cartProduct->setProduct($product);
             $quantity = $form->getData()->getQuantity();

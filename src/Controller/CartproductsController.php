@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Cart;
 use App\Entity\Cartproducts;
+use App\Entity\User;
+use App\Form\AddCartType;
 use App\Form\CartproductsType;
 use App\Repository\CartproductsRepository;
 use App\Repository\ProductRepository;
@@ -21,21 +23,35 @@ class CartproductsController extends AbstractController
         $user = $this->getUser();
         $cart = $user->getCart();
         $cartproducts = new Cartproducts();
-        // $cp = $cart->getCartsProducts()->toArray();
-        $cartproducts = $cartproductsRepository->findPanier($cart);
+        $cartproducts = $cart->getCartproducts()->toArray();
+        // $cartproducts = $cartproductsRepository->findPanier($cart);
+        foreach ($cartproducts as $cartproduct) {
+            $products = $cartproduct->getProduct();
+            $name = $products->getName();
+            $products->setName($name);
+            $cartproduct->setProduct($products);
+        }
         // var_dump($cartproducts);
-        // $products = $productsRepository->findproduits($cartproducts);
         return $this->render('cartproducts/index.html.twig', [
-            'cartproducts' => $cartproductsRepository->findPanier($cart),
+            'cartproducts' => $cartproducts,
             // 'products' => $productsRepository->findproduits($cart),
         ]);
     }
 
-    #[Route('/{id}', name: 'app_cartproducts_show', methods: ['GET'])]
-    public function show(Cartproducts $cartproduct): Response
+    #[Route('/{id}', name: 'app_cartproducts_show', methods: ['GET', 'POST'])]
+    public function show(request $request, Cartproducts $cartproduct, CartproductsController $cartproductsRepository): Response
     {
+        $form = $this->createForm(CartproductsType::class, $cartproduct);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $cartproductsRepository->save($cartproduct, true);
+
+            // return $this->redirectToRoute('app_cartproducts_index', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->render('cartproducts/show.html.twig', [
             'cartproduct' => $cartproduct,
+            'form' => $form->createView(),
         ]);
     }
 
