@@ -31,14 +31,9 @@ class ContentController extends AbstractController
         $name = $form->getData()->getName();
         $seller = $form->getData()->getSeller();
         $category = $form->getData()->getCategory();
-        var_dump($category);
-        var_dump($seller);
+        //var_dump($category);
+        //var_dump($seller);
         $brand = $form->getData()->getBrand();
-        if ($form->isSubmitted() && $form->isValid()) {
-        }
-        // return $this->render('content/product/index.html.twig', [
-        //     'products' => $productRepository->findAll(),
-        // ]);  
         if ($form->isSubmitted() && $form->isValid()) {
             if ($name == NULL && $seller == NULL && $category == NULL && $brand == NULL){
                 $filtre = $productRepository->findAll();
@@ -46,7 +41,7 @@ class ContentController extends AbstractController
                 // $filtre = $productRepository->findProduct($name, $seller, $category, $brand);
                 // $filtre = $productRepository->findAll();
                 $filtre = $productRepository->findProduct($category);
-            }
+           }
         }else{
             $filtre = $productRepository->findAll();
         }

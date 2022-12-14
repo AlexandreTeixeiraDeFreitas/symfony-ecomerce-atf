@@ -130,7 +130,7 @@ class ProductRepository extends ServiceEntityRepository
 // }
     public function findProduct($category): array
     {
-        var_dump($category);
+        //var_dump($category);
         return $this->createQueryBuilder('p')
             ->andWhere('p.category = :val')
             ->setParameter('val', $category)

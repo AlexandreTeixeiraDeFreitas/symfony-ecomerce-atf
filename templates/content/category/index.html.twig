@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Category index</h1>
 
-    <table class="table">
+    <table class="table w3-table-all w3-hoverable">
         <thead>
             <tr>
                 <th>Id</th>
@@ -19,8 +19,8 @@
                 <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
                 <td>
-                    <a href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+                    <a class="w3-button w3-teal" href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
+                    <a class="w3-button w3-teal" href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +31,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_category_new') }}">Create new</a>
+    <a class="w3-button w3-teal" href="{{ path('app_category_new') }}">+</a>
 {% endblock %}
