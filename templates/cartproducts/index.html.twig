@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cartproducts index{% endblock %}
+
+{% block body %}
+    <h1>Cartproducts index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantity</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cartproduct in cartproducts %}
+        {{dump(cartproduct)}}
+            <tr>
+                <td>{{ cartproduct.id }}</td>
+                <td>{{ cartproduct.quantity }}</td>
+                <td>
+                    <a href="{{ path('app_cartproducts_show', {'id': cartproduct.id}) }}">show</a>
+                    <a href="{{ path('app_cartproducts_edit', {'id': cartproduct.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

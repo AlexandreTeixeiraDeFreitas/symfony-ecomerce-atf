@@ -42,17 +42,17 @@ class CartproductsRepository extends ServiceEntityRepository
 //    /**
 //     * @return Cartproducts[] Returns an array of Cartproducts objects
 //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   public function findPanier($value): array
+   {
+       return $this->createQueryBuilder('c')
+           ->andWhere('c.cart = :val')
+           ->setParameter('val', $value)
+        //    ->orderBy('c.id', 'ASC')
+        //    ->setMaxResults(10)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Cartproducts
 //    {

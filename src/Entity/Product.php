@@ -257,7 +257,7 @@ class Product
             $this->cartproducts->add($cartproduct);
             $cartproduct->setProduct($this);
         }
-
+        
         return $this;
     }
 

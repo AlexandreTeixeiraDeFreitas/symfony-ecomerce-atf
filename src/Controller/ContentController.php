@@ -65,8 +65,11 @@ class ContentController extends AbstractController
     {
         $user = new User();
         $cart = new Cart();
+        $status = NULL;
         $user = $this->getUser();
         $cart = $user->getCart();   
+        $cp = $cart->getCartproducts()->toArray();
+        // var_dump($cp);
         $cartProduct = new Cartproducts(); 
         $cartProduct->setCart($cart);
         $form = $this->createForm(AddCartType::class, $cartProduct);
@@ -75,8 +78,21 @@ class ContentController extends AbstractController
             $cartProduct->setProduct($product);
             $quantity = $form->getData()->getQuantity();
             $cartProduct->setQuantity($quantity);
-            $cartproductsRepository->save($cartProduct, true);
-
+            if (isset($cp)) {
+                foreach ($cp as $cpProduct) {
+                    if ($cpProduct->getProduct() == $cartProduct->getProduct() && $cpProduct->getCart() == $cartProduct->getCart()) {
+                        $quantity = $quantity + $cpProduct->getQuantity();
+                        $cpProduct->setQuantity($quantity);
+                        $cartproductsRepository->save($cpProduct, true);
+                        $status = true;
+                    }
+                }
+            // }else {
+            //     $cartproductsRepository->save($cartProduct, true);
+            }
+            if (empty($status)) {
+                $cartproductsRepository->save($cartProduct, true);
+            }
             // return $this->redirectToRoute('app_product_show', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('content/product/show.html.twig', [
