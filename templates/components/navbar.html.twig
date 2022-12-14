@@ -4,7 +4,7 @@
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_product_index') }}">Produit</a>
         {% if app.user %}
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_logout') }}">Logout</a>
-            <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_profil') }}">Bienvenue {{app.user.nom}} {{app.user.prenom}}</a>
+            <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_profil') }}">Bienvenue  {{app.user.firstname}} {{app.user.lastname}}</a>
         {% else %}
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_login') }}">Login</a>
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_register') }}">register</a>

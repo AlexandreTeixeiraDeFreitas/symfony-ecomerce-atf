@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Entity\Cart;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -62,12 +63,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Product::class)]
     private Collection $products;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Cart::class, cascade: ['persist', 'remove'])]
+    private ?Cart $cart;
+
     public function __construct()
     {
         $this->createAt = new DateTimeImmutable();
         $this->favorites = new ArrayCollection();
         $this->products = new ArrayCollection();
     }
+
+    
 
     public function getId(): ?int
     {
@@ -289,6 +295,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $product->setSeller(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of cart
+     */ 
+    public function getCart(): Cart
+    {
+        return $this->cart;
+    }
+
+    /**
+     * Set the value of cart
+     *
+     * @return  self
+     */ 
+    public function setCart(Cart $cart): self
+    {
+        $this->cart = $cart;
 
         return $this;
     }

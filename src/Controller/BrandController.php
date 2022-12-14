@@ -10,19 +10,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/brand')]
+#[Route('/')]
 class BrandController extends AbstractController
 {
-    #[Route('/', name: 'app_brand_index', methods: ['GET'])]
-    public function index(BrandRepository $brandRepository): Response
+    #[Route('/brand', name: 'app_brand_index', methods: ['GET'])]
+    public function indexbrand(BrandRepository $brandRepository): Response
     {
         return $this->render('content/brand/index.html.twig', [
             'brands' => $brandRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_brand_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, BrandRepository $brandRepository): Response
+    #[Route('/brand/new', name: 'app_brand_new', methods: ['GET', 'POST'])]
+    public function newbrand(Request $request, BrandRepository $brandRepository): Response
     {
         $brand = new Brand();
         $form = $this->createForm(BrandType::class, $brand);
@@ -40,16 +40,16 @@ class BrandController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_brand_show', methods: ['GET'])]
-    public function show(Brand $brand): Response
+    #[Route('/brand/{id}', name: 'app_brand_show', methods: ['GET'])]
+    public function showbrand(Brand $brand): Response
     {
         return $this->render('content/brand/show.html.twig', [
             'brand' => $brand,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_brand_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Brand $brand, BrandRepository $brandRepository): Response
+    #[Route('/brand/{id}/edit', name: 'app_brand_edit', methods: ['GET', 'POST'])]
+    public function editbrand(Request $request, Brand $brand, BrandRepository $brandRepository): Response
     {
         $form = $this->createForm(BrandType::class, $brand);
         $form->handleRequest($request);
@@ -66,8 +66,8 @@ class BrandController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_brand_delete', methods: ['POST'])]
-    public function delete(Request $request, Brand $brand, BrandRepository $brandRepository): Response
+    #[Route('/brand/delete/{id}', name: 'app_brand_delete', methods: ['POST'])]
+    public function deletebrand(Request $request, Brand $brand, BrandRepository $brandRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$brand->getId(), $request->request->get('_token'))) {
             $brandRepository->remove($brand, true);

@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block body %}
+    <h1>Profil</h1>
+
+    <div class=" w3-container w3-margin-top" style="width:50%; display: block; margin-left: auto; margin-right: auto;">
+        <div class="w3-card-4">
+
+        {# <header class="w3-container w3-teal">
+        <h1>{{ product.name }}</h1>
+        </header> #}
+
+        <div class="w3-container" >
+        <p><strong>prenon: </strong>{{ app.user.firstname }}</p>
+        <p><strong>nom: </strong>{{ app.user.lastname }}</p>
+        <p><strong>Email: </strong>{{ app.user.email }}</p>
+        <p><strong>Tel: </strong>{{ app.user.phonenumber }}</p>
+        <p><strong>Pays: </strong>{{ app.user.country }}</p>
+        <p><strong>address: </strong>{{ app.user.address }}</p>
+        <p><strong>Code postal: </strong>{{ app.user.postalcode }}</p>
+        </div>
+
+        <footer class="w3-container w3-teal">
+            {# <a class="w3-button" href="{{ path('app_product_edit', {'id': app.user.id}) }}">edit</a> #}
+        </footer>
+
+        </div>
+    </div>
+
+    {# <a class="w3-button w3-teal" href="{{ path('app_product_edit', {'id': app.user.id}) }}">edit</a> #}
+
+    {# {{ include('content/product/_delete_form.html.twig') }} #}
+{% endblock %}

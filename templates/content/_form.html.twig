@@ -2,3 +2,4 @@
     {{ form_widget(form) }}
     <button class="btn w3-btn w3-blue-grey">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+{% set name = app.request.attributes.get('_routes') %}

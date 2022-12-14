@@ -249,7 +249,7 @@ class Product
     public function getCartproducts(): Collection
     {
         return $this->cartproducts;
-    }
+    }   
 
     public function addCartproduct(Cartproducts $cartproduct): self
     {

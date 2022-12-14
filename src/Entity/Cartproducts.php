@@ -19,6 +19,9 @@ class Cartproducts
     #[ORM\ManyToOne(inversedBy: 'cartproducts')]
     private ?product $product = null;
 
+    #[ORM\Column]
+    private ?int $quantity = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Cartproducts
     public function setProduct(?product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

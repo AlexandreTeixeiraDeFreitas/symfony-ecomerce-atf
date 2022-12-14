@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Product;
+use App\Form\CategoryType;
 use App\Form\ProductType;
+use App\Form\FiltreType;
 use App\Form\UserType;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,5 +73,51 @@ class ActionController extends AbstractController
         }
 
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/category/new', name: 'app_category_new', methods: ['GET', 'POST'])]
+    public function newCategory(Request $request, CategoryRepository $categoryRepository): Response
+    {
+        $category = new Category();
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $categoryRepository->save($category, true);
+
+            return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('content/category/new.html.twig', [
+            'category' => $category,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/category/{id}/edit', name: 'app_category_edit', methods: ['GET', 'POST'])]
+    public function editCategory(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $categoryRepository->save($category, true);
+
+            return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('content/category/edit.html.twig', [
+            'category' => $category,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/category/delete/{id}', name: 'app_category_delete', methods: ['POST'])]
+    public function deleteCategory(Request $request, Category $category, CategoryRepository $categoryRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+            $categoryRepository->remove($category, true);
+        }
+
+        return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
     }
 }

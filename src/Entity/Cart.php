@@ -15,11 +15,11 @@ class Cart
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'cart', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'carts')]
-    private ?product $products = null;
+    // #[ORM\ManyToOne(inversedBy: 'carts')]
+    // private ?product $products = null;
 
     #[ORM\OneToMany(mappedBy: 'cart', targetEntity: Cartproducts::class)]
     private Collection $cartproducts;
@@ -46,17 +46,17 @@ class Cart
         return $this;
     }
 
-    public function getProducts(): ?product
-    {
-        return $this->products;
-    }
+    // public function getProducts(): ?product
+    // {
+    //     return $this->products;
+    // }
 
-    public function setProducts(?product $products): self
-    {
-        $this->products = $products;
+    // public function setProducts(?product $products): self
+    // {
+    //     $this->products = $products;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, Cartproducts>

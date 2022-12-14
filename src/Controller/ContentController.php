@@ -2,20 +2,28 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
+use App\Entity\Cartproducts;
+use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\User;
+use App\Form\AddCartType;
 use App\Form\FiltreType;
 use App\Form\ProductType;
+use App\Form\CategoryType;
+use App\Repository\CartproductsRepository;
+use App\Repository\CartRepository;
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 class ContentController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function home(): Response
     {
         return $this->render('content/home.html.twig', [
             'controller_name' => 'ContentController',
@@ -52,11 +60,44 @@ class ContentController extends AbstractController
 
     }
 
-    #[Route('/product/{id}', name: 'app_product_show', methods: ['GET'])]
-    public function show(Product $product): Response
+    #[Route('/product/{id}', name: 'app_product_show', methods: ['GET', 'POST'])]
+    public function show(Request $request, Product $product, CartproductsRepository $cartproductsRepository): Response
     {
+        $user = new User();
+        $cart = new Cart();
+        $user = $this->getUser();
+        $cart = $user->getCart();   
+        $cartProduct = new Cartproducts(); 
+        $cartProduct->setCart($cart);
+        $form = $this->createForm(AddCartType::class, $cartProduct);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $cartProduct->setProduct($product);
+            $quantity = $form->getData()->getQuantity();
+            $cartProduct->setQuantity($quantity);
+            $cartproductsRepository->save($cartProduct, true);
+
+            // return $this->redirectToRoute('app_product_show', [], Response::HTTP_SEE_OTHER);
+        }
         return $this->render('content/product/show.html.twig', [
             'product' => $product,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/category', name: 'app_category_index', methods: ['GET'])]
+    public function indexCategory(CategoryRepository $categoryRepository): Response
+    {
+        return $this->render('content/category/index.html.twig', [
+            'categories' => $categoryRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/category/{id}', name: 'app_category_show', methods: ['GET'])]
+    public function showCategory(Category $category): Response
+    {
+        return $this->render('content/category/show.html.twig', [
+            'category' => $category,
         ]);
     }
 }
