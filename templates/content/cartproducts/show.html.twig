@@ -19,13 +19,14 @@
         <p><strong>description: </strong>{{ cartproduct.product.description }}</p>
         <p><strong>Quantity: </strong>{{ cartproduct.product.quantity }}</p>
         <p><strong>Sold: </strong>{{ cartproduct.product.sold }}</p>
-        <p><strong>Statut: </strong>{{ cartproduct.product.statut }}</p>
+        <p><strong>Statut: </strong>{{ cartproduct.product.statut }}€</p>
         <p><strong>la quantity sélectionné: <strong>{{ cartproduct.quantity }}</p>
+        <p><strong>total: </strong>{{ cartproduct.product.price * cartproduct.quantity }}€</p>
         </div>
 
         <footer class="w3-container w3-teal">
             {# <a class="btn w3-button" href="{{ path('app_cartproducts_show', {'id': cartproduct.id}) }}">show</a> #}
-            <form class="btn w3-button" method="post" action="{{ path('app_cartproducts_delete', {'id': cartproduct.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+            <form class="btn w3-button" method="post" action="{{ path('app_panier_delete', {'id': cartproduct.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cartproduct.id) }}">
                 <button class="btn w3-button">Delete</button>
             </form>
@@ -33,7 +34,7 @@
 
         </div>
     </div>
-    {{ include('content/_form.html.twig', {'button_label': 'Ajouter dans le panier'}) }}
-    <a class="btn w3-button" href="{{ path('app_cartproducts_index') }}">back to list</a>
+    {{ include('content/_form.html.twig', {'button_label': 'Modifier la quantité'}) }}
+    <a class="btn w3-button" href="{{ path('app_panier') }}">back to list</a>
 
 {% endblock %}

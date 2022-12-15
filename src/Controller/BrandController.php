@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/')]
 class BrandController extends AbstractController
 {
-    #[Route('/brand', name: 'app_brand_index', methods: ['GET'])]
+    #[Route('/admin/brand', name: 'app_brand_index', methods: ['GET'])]
     public function indexbrand(BrandRepository $brandRepository): Response
     {
         return $this->render('content/brand/index.html.twig', [
@@ -21,7 +21,7 @@ class BrandController extends AbstractController
         ]);
     }
 
-    #[Route('/brand/new', name: 'app_brand_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/brand/new', name: 'app_brand_new', methods: ['GET', 'POST'])]
     public function newbrand(Request $request, BrandRepository $brandRepository): Response
     {
         $brand = new Brand();
@@ -40,7 +40,7 @@ class BrandController extends AbstractController
         ]);
     }
 
-    #[Route('/brand/{id}', name: 'app_brand_show', methods: ['GET'])]
+    #[Route('/admin/brand/{id}', name: 'app_brand_show', methods: ['GET'])]
     public function showbrand(Brand $brand): Response
     {
         return $this->render('content/brand/show.html.twig', [
@@ -48,7 +48,7 @@ class BrandController extends AbstractController
         ]);
     }
 
-    #[Route('/brand/{id}/edit', name: 'app_brand_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/brand/edit/{id}', name: 'app_brand_edit', methods: ['GET', 'POST'])]
     public function editbrand(Request $request, Brand $brand, BrandRepository $brandRepository): Response
     {
         $form = $this->createForm(BrandType::class, $brand);

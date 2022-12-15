@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Cartproducts;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Form\CategoryType;
 use App\Form\ProductType;
 use App\Form\FiltreType;
 use App\Form\UserType;
+use App\Repository\CartproductsRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use DateTimeImmutable;
@@ -47,9 +49,14 @@ class ActionController extends AbstractController
         ]);
     }
 
-    #[Route('/product/{id}/edit', name: 'app_product_edit', methods: ['GET', 'POST'])]
+    #[Route('/product/edit/{id}', name: 'app_product_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Product $product, ProductRepository $productRepository): Response
     {
+        $user = $this->getUser();
+        $userproduc = $product->getSeller();
+        if ($user != $userproduc) {
+            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+        }
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         $product->setUpdateAt(new DateTimeImmutable('now'));
@@ -119,5 +126,15 @@ class ActionController extends AbstractController
         }
 
         return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('profil/panier/{id}', name: 'app_panier_delete', methods: ['POST'])]
+    public function deletePanier(Request $request, Cartproducts $cartproduct, CartproductsRepository $cartproductsRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$cartproduct->getId(), $request->request->get('_token'))) {
+            $cartproductsRepository->remove($cartproduct, true);
+        }
+
+        return $this->redirectToRoute('app_panier', [], Response::HTTP_SEE_OTHER);
     }
 }

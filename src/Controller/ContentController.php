@@ -8,6 +8,7 @@ use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\AddCartType;
+use App\Form\CartproductsType;
 use App\Form\FiltreType;
 use App\Form\ProductType;
 use App\Form\CategoryType;
@@ -15,6 +16,7 @@ use App\Repository\CartproductsRepository;
 use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -101,7 +103,7 @@ class ContentController extends AbstractController
         ]);
     }
 
-    #[Route('/category', name: 'app_category_index', methods: ['GET'])]
+    #[Route('/admin/category', name: 'app_category_index', methods: ['GET'])]
     public function indexCategory(CategoryRepository $categoryRepository): Response
     {
         return $this->render('content/category/index.html.twig', [
@@ -109,11 +111,49 @@ class ContentController extends AbstractController
         ]);
     }
 
-    #[Route('/category/{id}', name: 'app_category_show', methods: ['GET'])]
+    #[Route('/admin/category/{id}', name: 'app_category_show', methods: ['GET'])]
     public function showCategory(Category $category): Response
     {
         return $this->render('content/category/show.html.twig', [
             'category' => $category,
         ]);
     }
+    #[Route('/profil/panier', name: 'app_panier', methods: ['GET', 'POST'])]
+    public function indexPanier(): Response
+    {
+        $user = $this->getUser();
+        $cart = $user->getCart();
+        $cartproducts = new Cartproducts();
+        $cartproducts = $cart->getCartproducts()->toArray();
+        // var_dump($cartproducts);
+        return $this->render('content/cartproducts/index.html.twig', [
+            'cartproducts' => $cartproducts,
+            // 'products' => $productsRepository->findproduits($cart),
+        ]);
+    }
+
+    #[Route('/profil/panier/{id}', name: 'app_panier_show', methods: ['GET', 'POST'])]
+    public function editPanier(Request $request, Cartproducts $cartproduct, CartproductsRepository $cartproductsRepository): Response
+    {
+        $user = $this->getUser();
+        $cart = $user->getCart();
+        $cart1 = $cartproduct->getCart();
+        if ($cart != $cart1) {
+            return $this->redirectToRoute('app_panier', [], Response::HTTP_SEE_OTHER);
+        }
+        $form = $this->createForm(CartproductsType::class, $cartproduct);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $cartproductsRepository->save($cartproduct, true);
+
+            // return $this->redirectToRoute('app_cartproducts_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('content/cartproducts/show.html.twig', [
+            'cartproduct' => $cartproduct,
+            'form' => $form,
+        ]);
+    }
+
 }

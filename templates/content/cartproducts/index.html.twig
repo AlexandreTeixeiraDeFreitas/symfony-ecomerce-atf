@@ -4,8 +4,8 @@
 
 {% block body %}
     <h1>Panier</h1>
-
-    <div class="w3-row">
+    {% set total = 0 %}
+    <div class="w3-row" >
        {% for cartproduct in cartproducts %}
             <div class="w3-third w3-container w3-margin-top  ">
                 <div class="w3-card-4">
@@ -17,13 +17,16 @@
                 <div class="w3-container">
                 <img class="w3-border" style="width:100%" src="{{asset(cartproduct.product.image)}}" alt="{{ cartproduct.product.name }}">
                 <p>{{ cartproduct.product.expcerpt }}</p>
-                <p>le prix: {{ cartproduct.product.price }}</p>
-                <p>la quantity sélectionné: {{ cartproduct.quantity }}</p>
+                <p><strong>le prix: </strong>{{ cartproduct.product.price }}</p>
+                <p><strong>la quantity sélectionné: </strong>{{ cartproduct.quantity }}€</p>
+                <p><strong>total: </strong>{{ cartproduct.product.price * cartproduct.quantity }}€</p>
+                {{ total == total + cartproduct.product.price * cartproduct.quantity }}
+                {% set total = total + cartproduct.product.price * cartproduct.quantity %}
                 </div>
 
                 <footer class="w3-container w3-teal">
-                    <a class="btn w3-button" href="{{ path('app_cartproducts_show', {'id': cartproduct.id}) }}">show</a>
-                    <form class="btn w3-button" method="post" action="{{ path('app_cartproducts_delete', {'id': cartproduct.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <a class="btn w3-button" href="{{ path('app_panier_show', {'id': cartproduct.id}) }}">show</a>
+                    <form class="btn w3-button" method="post" action="{{ path('app_panier_delete', {'id': cartproduct.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cartproduct.id) }}">
                         <button class="btn w3-button">Delete</button>
                     </form>
@@ -36,5 +39,7 @@
                 <td colspan="12">no records found</td>
             </div>
         {% endfor %}
+        {# {{dump(total)}} #}
     </div>
+    <a class="btn w3-button mt-3" href="{{ path('app_profil_chekout', {'total': total}) }}">Acheter</a>
 {% endblock %}
