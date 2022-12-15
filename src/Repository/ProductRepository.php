@@ -128,14 +128,43 @@ class ProductRepository extends ServiceEntityRepository
 //          ;
 //      }
 // }
-    public function findProduct($category): array
+    public function findProduct($name, $category, $brand, $seller): array
+    {
+        $sql = $this->createQueryBuilder('p');
+        if (isset($name)) {
+            $sql = $sql
+            ->andWhere('p.name LIKE :val')
+            ->setParameter('val', "%" . $name . "%");
+            // ->setParameter('val', $name);
+        }
+        if (isset($category)) {
+            $sql = $sql
+            ->andWhere('p.category = :val1')
+            ->setParameter('val1', $category);
+        }
+        if (isset($brand)) {
+            $sql = $sql
+            ->andWhere('p.brand = :val2')
+            ->setParameter('val2', $brand);
+        }
+        if (isset($seller)) {
+            $sql = $sql
+            ->andWhere('p.seller = :val3')
+            ->setParameter('val3', $seller);
+        }
+        $sql = $sql
+        ->getQuery()
+        ->getResult();
+        return $sql;
+    }
+
+
+    public function findBestSold(): array
     {
         //var_dump($category);
         return $this->createQueryBuilder('p')
-            ->andWhere('p.category = :val')
-            ->setParameter('val', $category)
-            // ->orderBy('p.category', 'ASC')
-            // ->setMaxResults(10)
+            ->orderBy('p.sold', 'DESC')
+            ->setMaxResults(3)
             ->getQuery()
             ->getResult()
         ;

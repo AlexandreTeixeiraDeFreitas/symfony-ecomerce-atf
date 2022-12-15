@@ -58,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToMany(targetEntity: product::class, inversedBy: 'Favorites')]
-    private Collection $favorites;
+    private Collection $favorites;  
 
     #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Product::class)]
     private Collection $products;

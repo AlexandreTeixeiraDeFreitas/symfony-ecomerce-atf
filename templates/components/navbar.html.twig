@@ -2,10 +2,13 @@
     <div class="w3-bar w3-border w3-blue-grey">
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_home') }}">aceuil</a>
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_product_index') }}">Produit</a>
-        {% if app.user %}
+        {% if is_granted('ROLE_USER') %}
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_logout') }}">Logout</a>
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_profil') }}">Bienvenue  {{app.user.firstname}} {{app.user.lastname}}</a>
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_panier') }}">Panier</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_admin') }}">Admin</a>
+            {% endif %}
         {% else %}
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_login') }}">Login</a>
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_register') }}">register</a>

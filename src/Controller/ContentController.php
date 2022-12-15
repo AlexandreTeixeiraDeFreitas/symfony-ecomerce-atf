@@ -25,10 +25,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContentController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function home(): Response
+    public function home(ProductRepository $productRepository): Response
     {
+        $product = $productRepository->findBestSold();
         return $this->render('content/home.html.twig', [
-            'controller_name' => 'ContentController',
+            'products' => $product,
         ]);
     }
 
@@ -41,6 +42,7 @@ class ContentController extends AbstractController
         $name = $form->getData()->getName();
         $seller = $form->getData()->getSeller();
         $category = $form->getData()->getCategory();
+        $brand = $form->getData()->getBrand();
         //var_dump($category);
         //var_dump($seller);
         $brand = $form->getData()->getBrand();
@@ -50,7 +52,7 @@ class ContentController extends AbstractController
             }else{
                 // $filtre = $productRepository->findProduct($name, $seller, $category, $brand);
                 // $filtre = $productRepository->findAll();
-                $filtre = $productRepository->findProduct($category);
+                $filtre = $productRepository->findProduct($name, $category, $brand, $seller);
            }
         }else{
             $filtre = $productRepository->findAll();

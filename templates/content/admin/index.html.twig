@@ -4,16 +4,32 @@
 {% block body %}
     <div class="w3-row">
         <div  class="w3-third w3-container w3-margin-top">
-        <a href="">
-            <div class="w3-card-4">
+            <a href="{{ path('app_admin_profil') }}" style="text-decoration:none;">
+                <div class="w3-card-4">
+                    <div class="w3-container" >
+                    <p style="text-align: center;">Admin utilisateur</p>
+                    </div>
 
-            <div class="w3-container" >
-            {# <img class="w3-border" style="width:100%" src="{{asset(product.image)}}" alt="{{ product.name }}"> #}
-            <p><strong>le résumer: </strong></p>
-            </div>
-
-            </div>
+                </div>
+            </a>
         </div>
-        </a>
+        <div  class="w3-third w3-container w3-margin-top">
+            <a href="{{ path('app_category_index') }}" style="text-decoration:none;">
+                <div class="w3-card-4">
+                    <div class="w3-container" >
+                    <p style="text-align: center;">les catégories</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div  class="w3-third w3-container w3-margin-top">
+            <a href="{{ path('app_brand_index') }}"  style="text-decoration:none;"> 
+                <div class="w3-card-4">
+                    <div class="w3-container" >
+                    <p style="text-align: center;">les marques</p>
+                    </div>
+                </div>
+            </a>
+        </div>
     </div class="w3-row">
 {% endblock %}

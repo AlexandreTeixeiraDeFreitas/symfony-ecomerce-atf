@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cartproducts;
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\User;
 use App\Form\CategoryType;
 use App\Form\ProductType;
 use App\Form\FiltreType;
@@ -12,6 +13,7 @@ use App\Form\UserType;
 use App\Repository\CartproductsRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -136,5 +138,13 @@ class ActionController extends AbstractController
         }
 
         return $this->redirectToRoute('app_panier', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/ajoutfavories/{product}/{user}', name: 'app_favory_new', methods: ['GET', 'POST'])]
+    public function newFavory(Product $product, User $user, UserRepository $userRepository): Response
+    {
+        $user->addFavorite($product);
+        $product->addFavorite($user);
+        return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
 }

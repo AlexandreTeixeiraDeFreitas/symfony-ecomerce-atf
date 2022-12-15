@@ -27,19 +27,19 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $cart = new Cart();
             $cart->setUser($user);
-            $user->setCart($cart);  
+            $user->setCart($cart); 
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
-
+            $user->setRoles($user->getRoles());
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_profil');
         }
 
         return $this->render('security/register.html.twig', [
