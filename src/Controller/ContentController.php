@@ -12,6 +12,9 @@ use App\Form\CartproductsType;
 use App\Form\FiltreType;
 use App\Form\ProductType;
 use App\Form\CategoryType;
+use App\Entity\Brand;
+use App\Form\BrandType;
+use App\Repository\BrandRepository;
 use App\Repository\CartproductsRepository;
 use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
@@ -182,4 +185,19 @@ class ContentController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/brand', name: 'app_brand_index', methods: ['GET'])]
+    public function indexbrand(BrandRepository $brandRepository): Response
+    {
+        return $this->render('content/brand/index.html.twig', [
+            'brands' => $brandRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/admin/brand/{id}', name: 'app_brand_show', methods: ['GET'])]
+    public function showbrand(Brand $brand): Response
+    {
+        return $this->render('content/brand/show.html.twig', [
+            'brand' => $brand,
+        ]);
+    }
 }

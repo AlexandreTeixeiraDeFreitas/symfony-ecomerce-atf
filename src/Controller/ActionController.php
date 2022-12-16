@@ -10,6 +10,9 @@ use App\Form\CategoryType;
 use App\Form\ProductType;
 use App\Form\FiltreType;
 use App\Form\UserType;
+use App\Entity\Brand;
+use App\Form\BrandType;
+use App\Repository\BrandRepository;
 use App\Repository\CartproductsRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
@@ -181,5 +184,51 @@ class ActionController extends AbstractController
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);  
         }
         return $this->redirectToRoute('app_profil_favoris', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/admin/brand/edit/{id}', name: 'app_brand_edit', methods: ['GET', 'POST'])]
+    public function editbrand(Request $request, Brand $brand, BrandRepository $brandRepository): Response
+    {
+        $form = $this->createForm(BrandType::class, $brand);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $brandRepository->save($brand, true);
+
+            return $this->redirectToRoute('app_brand_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('content/brand/edit.html.twig', [
+            'brand' => $brand,
+            'form' => $form,
+        ]);
+    }
+
+    // #[Route('/brand/delete/{id}', name: 'app_brand_delete', methods: ['POST'])]
+    // public function deletebrand(Request $request, Brand $brand, BrandRepository $brandRepository): Response
+    // {
+    //     if ($this->isCsrfTokenValid('delete'.$brand->getId(), $request->request->get('_token'))) {
+    //         $brandRepository->remove($brand, true);
+    //     }
+
+    //     return $this->redirectToRoute('app_brand_index', [], Response::HTTP_SEE_OTHER);
+    // }
+    #[Route('/admin/brand/new', name: 'app_brand_new', methods: ['GET', 'POST'])]
+    public function newbrand(Request $request, BrandRepository $brandRepository): Response
+    {
+        $brand = new Brand();
+        $form = $this->createForm(BrandType::class, $brand);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $brandRepository->save($brand, true);
+
+            return $this->redirectToRoute('app_brand_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('content/brand/new.html.twig', [
+            'brand' => $brand,
+            'form' => $form,
+        ]);
     }
 }
