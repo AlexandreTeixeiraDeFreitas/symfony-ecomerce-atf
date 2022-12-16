@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-
 class ActionController extends AbstractController
 {
     // #[Route('/action', name: 'app_action')]
@@ -122,15 +121,21 @@ class ActionController extends AbstractController
         ]);
     }
 
-    #[Route('/category/delete/{id}', name: 'app_category_delete', methods: ['POST'])]
-    public function deleteCategory(Request $request, Category $category, CategoryRepository $categoryRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
-            $categoryRepository->remove($category, true);
-        }
+    // #[Route('/category/delete/{id}', name: 'app_category_delete', methods: ['POST'])]
+    // public function deleteCategory(Request $request, Category $category, CategoryRepository $categoryRepository, ManagerRegistry $registry): Response
+    // {
+    //     if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+    //         // $categoryRepository->remove($category, true);
+    //         // $em = $registry->getManager();
+    //         // $em->remove($category);
+    //         // $em->flush();
+    //         $entityManager = $this->getDoctrine()->getManager();
+    //         $entityManager->remove($category);
+    //         $entityManager->flush();
+    //     }
 
-        return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
-    }
+    //     return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+    // }
 
     #[Route('profil/panier/delete/{id}', name: 'app_panier_delete', methods: ['POST'])]
     public function deletePanier(Request $request, Cartproducts $cartproduct, ProductRepository $productRepository, CartproductsRepository $cartproductsRepository): Response
