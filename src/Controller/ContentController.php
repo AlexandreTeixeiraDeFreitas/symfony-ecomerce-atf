@@ -167,18 +167,18 @@ class ContentController extends AbstractController
         if ($cart != $cart1) {
             return $this->redirectToRoute('app_panier', [], Response::HTTP_SEE_OTHER);
         }
-        $form = $this->createForm(CartproductsType::class, $cartproduct);
-        $form->handleRequest($request);
+        // $form = $this->createForm(CartproductsType::class, $cartproduct);
+        // $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $cartproductsRepository->save($cartproduct, true);
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $cartproductsRepository->save($cartproduct, true);
 
-            // return $this->redirectToRoute('app_cartproducts_index', [], Response::HTTP_SEE_OTHER);
-        }
+        //     // return $this->redirectToRoute('app_cartproducts_index', [], Response::HTTP_SEE_OTHER);
+        // }
 
-        return $this->renderForm('content/cartproducts/show.html.twig', [
+        return $this->render('content/cartproducts/show.html.twig', [
             'cartproduct' => $cartproduct,
-            'form' => $form,
+            // 'form' => $form,
         ]);
     }
 

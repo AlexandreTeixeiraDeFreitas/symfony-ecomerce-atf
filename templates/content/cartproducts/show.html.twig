@@ -25,7 +25,8 @@
         </div>
 
         <footer class="w3-container w3-teal">
-            {# <a class="btn w3-button" href="{{ path('app_cartproducts_show', {'id': cartproduct.id}) }}">show</a> #}
+            <a class="btn w3-button" href="{{ path('app_panier') }}">back</a>
+            <a class="btn w3-button" href="{{ path('app_product_show', {'id': cartproduct.id}) }}">show</a>
             <form class="btn w3-button" method="post" action="{{ path('app_panier_delete', {'id': cartproduct.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cartproduct.id) }}">
                 <button class="btn w3-button">Delete</button>
@@ -34,7 +35,6 @@
 
         </div>
     </div>
-    {{ include('content/_form.html.twig', {'button_label': 'Modifier la quantité'}) }}
-    <a class="btn w3-button" href="{{ path('app_panier') }}">back to list</a>
+    {# {{ include('content/_form.html.twig', {'button_label': 'Modifier la quantité'}) }} #}
 
 {% endblock %}

@@ -20,13 +20,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/user', name: 'app_user')]
-    public function index(): Response
-    {
-        return $this->render('security/index.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
-    }
 
     #[Route('/admin', name: 'app_admin')]
     public function admin(): Response
