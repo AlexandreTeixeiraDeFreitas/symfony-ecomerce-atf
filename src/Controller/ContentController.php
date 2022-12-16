@@ -88,14 +88,14 @@ class ContentController extends AbstractController
                     if ($cpProduct->getProduct() == $cartProduct->getProduct() && $cpProduct->getCart() == $cartProduct->getCart()) {
                         $productQ = $product->getQuantity();
                         $productQ = $productQ - $quantity;
-                        dump($productQ);
+                        // dump($productQ);
                         if ($productQ < 0) {
                             $message = 'il y a que une quantité de ' . $product->getQuantity() . ' de disponible';
                         }else{
                             $quantity = $quantity + $cpProduct->getQuantity();
                             $cpProduct->setQuantity($quantity);
                             $product->setQuantity($productQ);
-                            dd($productQ);
+                            // dd($productQ);
                             if ($productQ == 0){
                                 $product->setStatut('0');
                             }
@@ -105,8 +105,6 @@ class ContentController extends AbstractController
                         }
                     }
                 }
-            // }else {
-            //     $cartproductsRepository->save($cartProduct, true);
             }
             if (empty($status)) {
                 $productQ = $product->getQuantity();

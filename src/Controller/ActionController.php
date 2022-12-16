@@ -145,6 +145,7 @@ class ActionController extends AbstractController
             $productQ = $product->getQuantity();
             $productQ = $productQ + $cartproduct->getQuantity();
             $product->setQuantity($productQ);
+            $product->setStatut(1);
             $productRepository->save($product, true);
             $cartproductsRepository->remove($cartproduct, true);
 

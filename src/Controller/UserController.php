@@ -128,13 +128,10 @@ class UserController extends AbstractController
     public function deleteProfilAdmin( ManagerRegistry $registry, Request $request, User $user, UserRepository $userRepository, CartRepository $cartRepository, CartproductsRepository $cartproductsRepository, ProductRepository $productRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $cart = $user->getCart();
             $products = $user->getProducts();
             $favoris = $user->getFavorites()->toArray();
             // dd($cart);   
-            $cartproducts = $cart->getCartproducts()->toArray();
             foreach ($products as $product) {
-                $productRepository->remove($product, true);
                 foreach ($favoris as $favori) {
                     // dd($favori);
                     if ($favori->getid() == $product->getid()) {
@@ -148,9 +145,18 @@ class UserController extends AbstractController
                     }
                     // $cartproductsRepository->remove($cartproduct, true);
                 }
-
+                $product->setSeller(NULL);
+                $productRepository->save($product, true);
             }
+            $cart = $user->getCart();
+            $cartproducts = $cart->getCartproducts()->toArray();
             foreach ($cartproducts as $cartproduct) {
+                $product = $cartproduct->getProduct();
+                $productQ = $product->getQuantity();
+                $productQ = $productQ + $cartproduct->getQuantity();
+                $product->setQuantity($productQ);
+                $product->setStatut(1);
+                $productRepository->save($product, true);
                 $cartproductsRepository->remove($cartproduct, true);
             }
             $cartRepository->remove($cart, true);
