@@ -33,7 +33,9 @@
                 {% endif %} 
             {% endif %}
         </footer>
-
+        {% if message %}
+                <p style="color: red;">{{ message }}</p>
+        {% endif %}
         </div>
     </div>
     {{ include('content/_form.html.twig', {'button_label': 'Ajouter dans le panier'}) }}

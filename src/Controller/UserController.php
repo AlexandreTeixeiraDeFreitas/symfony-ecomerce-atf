@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Cartproducts;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\CartproductsRepository;
+use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Stripe\StripeClient;
-use Stripe;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +39,22 @@ class UserController extends AbstractController
     #[Route('/profil', name: 'app_profil')]
     public function profil(): Response
     {
+        $user = $this->getUser();
+        // $favoris = $user->getFavorites()->toArray();
+        // foreach ($favoris as $favori) {
+        // }
         return $this->render('content/profil/profil.html.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
+    #[Route('/profil/favori', name: 'app_profil_favoris')]
+    public function favori(): Response
+    {
+        $user = $this->getUser();
+        // $favoris = $user->getFavorites()->toArray();
+        // foreach ($favoris as $favori) {
+        // }
+        return $this->render('content/favoris/favoris.html.twig', [
             'controller_name' => 'UserController',
         ]);
     }
@@ -68,10 +87,21 @@ class UserController extends AbstractController
     }
 
     #[Route('/profil/chekout/creat/{total}', name: 'app_profil_chekoutcreat', methods: ['GET', 'POST'])]
-    public function profilechekoutcreat(float $total): Response
+    public function profilechekoutcreat(float $total, CartproductsRepository $cartproductsRepository, ProductRepository $productRepository): Response
     {
         $user = $this->getUser();
-        // if ($curentuser != $user) {
+        $cart = $user->getCart();
+        $cartproducts = new Cartproducts();
+        $cartproducts = $cart->getCartproducts()->toArray();
+        foreach ($cartproducts as $cartproduct) {
+            $product = $cartproduct->getProduct();
+            $soldproduct = $product->getSold();
+            $soldproduct = $soldproduct + $cartproduct->getQuantity();
+            $product->setSold($soldproduct);
+            $cartproductsRepository->remove($cartproduct, true);
+            $productRepository->save($product, true);
+        }
+
         //     return $this->redirectToRoute('app_profil', [], Response::HTTP_SEE_OTHER);
         // }
         $stripe = new StripeClient($this->getParameter('stripe_sk'));
@@ -95,11 +125,37 @@ class UserController extends AbstractController
     }
 
     #[Route('/admin/profil/delete/{id}', name: 'app_user_delete', methods: ['GET', 'POST'])]
-    public function deleteProfilAdmin(Request $request, User $user, UserRepository $userRepository): Response
+    public function deleteProfilAdmin( ManagerRegistry $registry, Request $request, User $user, UserRepository $userRepository, CartRepository $cartRepository, CartproductsRepository $cartproductsRepository, ProductRepository $productRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            
+            $cart = $user->getCart();
+            $products = $user->getProducts();
+            $favoris = $user->getFavorites()->toArray();
+            // dd($cart);   
+            $cartproducts = $cart->getCartproducts()->toArray();
+            foreach ($products as $product) {
+                $productRepository->remove($product, true);
+                foreach ($favoris as $favori) {
+                    // dd($favori);
+                    if ($favori->getid() == $product->getid()) {
+                        $user->removeFavorite($product);
+                        $product->removeFavorite($user);
+                
+                        $em = $registry->getManager();
+                        $em->persist($user, $product);
+                        $em->flush();
+                        
+                    }
+                    // $cartproductsRepository->remove($cartproduct, true);
+                }
+
+            }
+            foreach ($cartproducts as $cartproduct) {
+                $cartproductsRepository->remove($cartproduct, true);
+            }
+            $cartRepository->remove($cart, true);
             $userRepository->remove($user, true);
+
         }
 
         return $this->redirectToRoute('app_admin_profil', [], Response::HTTP_SEE_OTHER);

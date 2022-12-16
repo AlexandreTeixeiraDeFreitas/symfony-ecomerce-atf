@@ -65,10 +65,11 @@ class ContentController extends AbstractController
     }
 
     #[Route('/product/{id}', name: 'app_product_show', methods: ['GET', 'POST'])]
-    public function show(Request $request, Product $product, CartproductsRepository $cartproductsRepository): Response
+    public function show(Request $request, Product $product, CartproductsRepository $cartproductsRepository, ProductRepository $productRepository): Response
     {
         $user = new User();
         $cart = new Cart();
+        $message = NULL;
         $status = NULL;
         $user = $this->getUser();
         $cart = $user->getCart();   
@@ -85,23 +86,48 @@ class ContentController extends AbstractController
             if (isset($cp)) {
                 foreach ($cp as $cpProduct) {
                     if ($cpProduct->getProduct() == $cartProduct->getProduct() && $cpProduct->getCart() == $cartProduct->getCart()) {
-                        $quantity = $quantity + $cpProduct->getQuantity();
-                        $cpProduct->setQuantity($quantity);
-                        $cartproductsRepository->save($cpProduct, true);
-                        $status = true;
+                        $productQ = $product->getQuantity();
+                        $productQ = $productQ - $quantity;
+                        dump($productQ);
+                        if ($productQ < 0) {
+                            $message = 'il y a que une quantité de ' . $product->getQuantity() . ' de disponible';
+                        }else{
+                            $quantity = $quantity + $cpProduct->getQuantity();
+                            $cpProduct->setQuantity($quantity);
+                            $product->setQuantity($productQ);
+                            dd($productQ);
+                            if ($productQ == 0){
+                                $product->setStatut('0');
+                            }
+                            $productRepository->save($product, true);
+                            $cartproductsRepository->save($cpProduct, true);
+                            $status = true;
+                        }
                     }
                 }
             // }else {
             //     $cartproductsRepository->save($cartProduct, true);
             }
             if (empty($status)) {
-                $cartproductsRepository->save($cartProduct, true);
+                $productQ = $product->getQuantity();
+                $productQ = $productQ - $quantity;
+                if ($productQ < 0) {
+                    $message = 'il y a que une quantité de ' . $product->getQuantity() . ' de disponible';
+                }else{
+                    $product->setQuantity($productQ);
+                    if ($productQ == 0){
+                        $product->setStatut('0');
+                    }
+                    $productRepository->save($product, true);
+                    $cartproductsRepository->save($cartProduct, true);
+                }
             }
             // return $this->redirectToRoute('app_product_show', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('content/product/show.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
+            'message' => $message,
         ]);
     }
 

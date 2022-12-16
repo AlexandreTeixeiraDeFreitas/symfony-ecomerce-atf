@@ -15,6 +15,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +57,8 @@ class ActionController extends AbstractController
     {
         $user = $this->getUser();
         $userproduc = $product->getSeller();
-        if ($user != $userproduc) {
+        $roleChecker = $this->container->get('security.authorization_checker');
+        if ($user != $userproduc && !$roleChecker->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
         }
         $form = $this->createForm(ProductType::class, $product);
@@ -130,21 +132,48 @@ class ActionController extends AbstractController
         return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('profil/panier/{id}', name: 'app_panier_delete', methods: ['POST'])]
-    public function deletePanier(Request $request, Cartproducts $cartproduct, CartproductsRepository $cartproductsRepository): Response
+    #[Route('profil/panier/delete/{id}', name: 'app_panier_delete', methods: ['POST'])]
+    public function deletePanier(Request $request, Cartproducts $cartproduct, ProductRepository $productRepository, CartproductsRepository $cartproductsRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$cartproduct->getId(), $request->request->get('_token'))) {
+            $product = $cartproduct->getProduct();
+            $productQ = $product->getQuantity();
+            $productQ = $productQ + $cartproduct->getQuantity();
+            $product->setQuantity($productQ);
+            $productRepository->save($product, true);
             $cartproductsRepository->remove($cartproduct, true);
+
         }
 
         return $this->redirectToRoute('app_panier', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/ajoutfavories/{product}/{user}', name: 'app_favory_new', methods: ['GET', 'POST'])]
-    public function newFavory(Product $product, User $user, UserRepository $userRepository): Response
+    public function newFavory(Product $product, User $user, ManagerRegistry $registry): Response
     {
         $user->addFavorite($product);
         $product->addFavorite($user);
+
+        $em = $registry->getManager();
+        $em->persist($user, $product);
+        $em->flush();
+
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/deletefavories/{product}/{user}', name: 'app_favory_delete', methods: ['GET', 'POST'])]
+    public function deleteFavory(Request $request, Product $product, User $user, ManagerRegistry $registry): Response
+    {
+        $user->removeFavorite($product);
+        $product->removeFavorite($user);
+
+        $em = $registry->getManager();
+        $em->persist($user, $product);
+        $em->flush();
+        $referer = (string) $request->headers->get('referer');
+        $refererPathInfo = Request::create($referer)->getPathInfo();
+        if ($refererPathInfo == "/product"){
+            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);  
+        }
+        return $this->redirectToRoute('app_profil_favoris', [], Response::HTTP_SEE_OTHER);
     }
 }

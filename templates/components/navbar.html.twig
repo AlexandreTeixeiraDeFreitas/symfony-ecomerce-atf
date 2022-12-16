@@ -6,6 +6,7 @@
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_logout') }}">Logout</a>
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_profil') }}">Bienvenue  {{app.user.firstname}} {{app.user.lastname}}</a>
             <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_panier') }}">Panier</a>
+            <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_profil_favoris') }}">favoris</a>
             {% if is_granted('ROLE_ADMIN') %}
                 <a class="w3-bar-item w3-button w3-padding-16" href="{{ path('app_admin') }}">Admin</a>
             {% endif %}

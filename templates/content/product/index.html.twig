@@ -4,9 +4,6 @@
 
 {% block body %}
     {# {{dump(app.user.favorites)}} #}
-    {% for favori in app.user.favorites %}
-        {{dump(favori)}}
-    {% endfor %}
     <h1>Product index</h1>
     {{ form_start(form) }}
         {{ form_widget(form) }}
@@ -30,8 +27,19 @@
 
                 <footer class="w3-container w3-teal">
                     <a class="w3-button" href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
-                    <a class="w3-button" href="{{ path('app_favory_new', {'product': product.id, 'user': app.user.id}) }}">ajout aux favoris</a>
-                    {% if app.user %}
+                    {% set stsfavori = TRUE %}
+                    {% for favori in app.user.favorites  %}
+                        {% if favori.id == product.id %}
+                            <a class="w3-button" href="{{ path('app_favory_delete', {'product': product.id, 'user': app.user.id}) }}">enlever des favoris</a>
+                            {% set stsfavori = NULL %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if stsfavori %}
+                        <a class="w3-button" href="{{ path('app_favory_new', {'product': product.id, 'user': app.user.id}) }}">ajout aux favoris</a>
+                    {% endif %} 
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="w3-button" href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                    {% elseif app.user %}
                         {% if product.seller == app.user %}
                             <a class="w3-button" href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
                         {% endif %} 

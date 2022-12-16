@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}favoris{% endblock %}
+
+{% block body %}
+    <div class="w3-row">
+       {% for favori in app.user.favorites %}
+            <div class="w3-third w3-container w3-margin-top  ">
+                <div class="w3-card-4">
+
+                <header class="w3-container w3-teal">
+                <h1>{{ favori.name }}</h1>
+                </header>
+
+                <div class="w3-container">
+                <img class="w3-border" style="width:100%" src="{{asset(favori.image)}}" alt="{{ favori.name }}">
+                <p>{{ favori.expcerpt }}</p>
+                <p>le prix: {{ favori.price }}€</p>
+                </div>
+
+                <footer class="w3-container w3-teal">
+                    <a class="w3-button" href="{{ path('app_product_show', {'id': favori.id}) }}">show</a>
+                    <a class="w3-button" href="{{ path('app_favory_delete', {'product': favori.id, 'user': app.user.id}) }}">enlever des favoris</a>
+                </footer>
+
+                </div>
+            </div>
+        {% else %}
+            <div class="w3-third w3-container ">
+                <td colspan="12">no records found</td>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

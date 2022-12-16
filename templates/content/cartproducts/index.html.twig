@@ -18,7 +18,7 @@
                 <img class="w3-border" style="width:100%" src="{{asset(cartproduct.product.image)}}" alt="{{ cartproduct.product.name }}">
                 <p>{{ cartproduct.product.expcerpt }}</p>
                 <p><strong>le prix: </strong>{{ cartproduct.product.price }}</p>
-                <p><strong>la quantity sélectionné: </strong>{{ cartproduct.quantity }}€</p>
+                <p><strong>la quantity sélectionné: </strong>{{ cartproduct.quantity }}</p>
                 <p><strong>total: </strong>{{ cartproduct.product.price * cartproduct.quantity }}€</p>
                 {{ total == total + cartproduct.product.price * cartproduct.quantity }}
                 {% set total = total + cartproduct.product.price * cartproduct.quantity %}
