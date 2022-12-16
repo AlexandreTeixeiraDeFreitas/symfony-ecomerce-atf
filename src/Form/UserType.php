@@ -56,31 +56,30 @@ class UserType extends AbstractType
             // ->add('updatedAt')
             // ->add('favorites')
         ;
-        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-
-           }else{
-            $builder
-                ->add('password', RepeatedType::class, [
-                    'type' => PasswordType::class,
-                    'first_options'  => ['label' => 'Password','attr' => ['class' => 'w3-input'],],
-                    'second_options' => ['label' => 'Repeat Password','attr' => ['class' => 'w3-input'],],
-                    'invalid_message' => 'The password fields must match.',
-                    'mapped' => false,
-                    'attr' => ['autocomplete' => 'new-password',],
-                    'constraints' => [
-                        new NotBlank([
-                            'message' => 'Please enter a password',
-                        ]),
-                        new Length([
-                            'min' => 6,
-                            'minMessage' => 'Your password should be at least {{ limit }} characters',
-                            // max length allowed by Symfony for security reasons
-                            'max' => 4096,
-                        ]),
-                    ],
-                ])
-                ;
-           }
+        // if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+        //    }else{
+        //     $builder
+        //         ->add('password', RepeatedType::class, [
+        //             'type' => PasswordType::class,
+        //             'first_options'  => ['label' => 'Password','attr' => ['class' => 'w3-input'],],
+        //             'second_options' => ['label' => 'Repeat Password','attr' => ['class' => 'w3-input'],],
+        //             'invalid_message' => 'The password fields must match.',
+        //             'mapped' => false,
+        //             'attr' => ['autocomplete' => 'new-password',],
+        //             'constraints' => [
+        //                 new NotBlank([
+        //                     'message' => 'Please enter a password',
+        //                 ]),
+        //                 new Length([
+        //                     'min' => 6,
+        //                     'minMessage' => 'Your password should be at least {{ limit }} characters',
+        //                     // max length allowed by Symfony for security reasons
+        //                     'max' => 4096,
+        //                 ]),
+        //             ],
+        //         ])
+        //         ;
+        //    }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

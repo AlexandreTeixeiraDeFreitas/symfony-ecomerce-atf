@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cartproducts;
 use App\Entity\User;
+use App\Form\PassType;
 use App\Form\UserType;
 use App\Repository\CartproductsRepository;
 use App\Repository\CartRepository;
@@ -56,6 +57,25 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        $user->setUpdatedAt(new DateTimeImmutable('now'));
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userRepository->save($user, true);
+
+            return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('content/profil/edit.html.twig', [
+            'user' => $user,
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/profil/edit/password', name: 'app_profil_editpass', methods: ['GET', 'POST'])]
+    public function profileditpass(Request $request, UserRepository $userRepository): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(PassType::class, $user);
         $form->handleRequest($request);
         $user->setUpdatedAt(new DateTimeImmutable('now'));
 
