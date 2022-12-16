@@ -19,7 +19,11 @@
         <p><strong>description: </strong>{{ product.description }}</p>
         <p><strong>Quantity: </strong>{{ product.quantity }}</p>
         <p><strong>Sold: </strong>{{ product.sold }}</p>
-        <p><strong>Statut: </strong>{{ product.statut }}</p>
+        {% if product.statut == 0 %}
+            <p><strong>Statut: </strong>indisponible</p>
+        {% elseif product.statut == 1 %}
+            <p><strong>Statut: </strong>disponible</p>
+        {% endif %}
         <p><strong>Créer: </strong>{{ product.creatAt ? product.creatAt|date('Y-m-d H:i:s') : '' }}</p>
         <p><strong>Modifier: </strong>{{ product.updateAt ? product.updateAt|date('Y-m-d H:i:s') : '' }}</p>
         </div>

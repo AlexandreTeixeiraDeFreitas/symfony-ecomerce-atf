@@ -19,7 +19,11 @@
         <p><strong>description: </strong>{{ cartproduct.product.description }}</p>
         <p><strong>Quantity: </strong>{{ cartproduct.product.quantity }}</p>
         <p><strong>Sold: </strong>{{ cartproduct.product.sold }}</p>
-        <p><strong>Statut: </strong>{{ cartproduct.product.statut }}€</p>
+        {% if cartproduct.product.statut == 0 %}
+            <p><strong>Statut: </strong>indisponible</p>
+        {% elseif cartproduct.product.statut == 1 %}
+            <p><strong>Statut: </strong>disponible</p>
+        {% endif %}
         <p><strong>la quantity sélectionné: </strong>{{ cartproduct.quantity }}</p>
         <p><strong>total: </strong>{{ cartproduct.product.price * cartproduct.quantity }}€</p>
         </div>

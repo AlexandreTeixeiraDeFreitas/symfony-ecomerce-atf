@@ -169,4 +169,17 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findFavoris(): array
+    {
+        //var_dump($category);
+        return $this->createQueryBuilder('p')
+            ->join('n.Favorites','f')
+            ->select('count(f.product)')
+            ->orderBy('f.product', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
