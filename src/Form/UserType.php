@@ -38,15 +38,19 @@ class UserType extends AbstractType
                 ])
             ->add('phonenumber', TextType::class, [
                 'attr' => ['class' => 'w3-input'],
+                'required' => false,
                 ])
             ->add('country', TextType::class, [
                 'attr' => ['class' => 'w3-input'],
+                'required' => false,
                 ])
             ->add('address', TextType::class, [
                 'attr' => ['class' => 'w3-input'],
+                'required' => false,
                 ])
             ->add('postalcode', TextType::class, [
                 'attr' => ['class' => 'w3-input'],
+                'required' => false,
                 ])
             // ->add('createAt')
             // ->add('updatedAt')

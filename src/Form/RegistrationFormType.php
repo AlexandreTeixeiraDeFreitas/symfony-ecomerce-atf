@@ -33,6 +33,7 @@ class RegistrationFormType extends AbstractType
                 ])
             ->add('phonenumber', IntegerType::class, [
                 'attr' => ['class' => 'w3-input'],
+                'required' => false,
                 'constraints' => [
                     new Length([
                         'min' => 8,
@@ -43,12 +44,15 @@ class RegistrationFormType extends AbstractType
                 ])
             ->add('address', TextType::class, [
                 'attr' => ['class' => 'w3-input'],
+                'required' => false,
                 ])
             ->add('postalcode', TextType::class, [
                 'attr' => ['class' => 'w3-input'],
+                'required' => false,
                 ])
             ->add('country', TextType::class, [
                 'attr' => ['class' => 'w3-input'],
+                'required' => false,
                 ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,

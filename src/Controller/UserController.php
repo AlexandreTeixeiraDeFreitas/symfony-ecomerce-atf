@@ -73,6 +73,17 @@ class UserController extends AbstractController
     #[Route('/profil/chekout/{total}', name: 'app_profil_chekout')]
     public function profilechekout(float $total): Response
     {
+        $message = NULL;
+        $user = $this->getUser();
+        $address = $user->getAddress();
+        $country = $user->getCountry();
+        $postal = $user->getPostalcode();
+        if (empty($address) && empty($country) && empty($postal)) {
+            $message = "Remplissez votre adresse, pay et code postal";
+            return $this->render('content/profil/profil.html.twig', [
+                'message' => $message,
+            ]);
+        }
         return $this->render('content/profil/chekout.html.twig', [
             'stripe_key' => $this->getParameter('stripe_k'),
             'total' => $total,
@@ -163,9 +174,10 @@ class UserController extends AbstractController
     #[Route('/admin/edit/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function editadmin(Request $request, User $user, UserRepository $userRepository): Response
     {
+        
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
+        $user->setUpdatedAt(new DateTimeImmutable('now'));
         if ($form->isSubmitted() && $form->isValid()) {
             $userRepository->save($user, true);
 
