@@ -30,12 +30,28 @@ class ContentController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function home(ProductRepository $productRepository): Response
     {
+        $nb = 0;
         $tbproduct = array();
+        $nbproduct = array();
+        $productfav = $productRepository->findAll();
+        foreach ($productfav as $product) {
+            $Favoris = $product->getFavorites();
+            foreach ($Favoris as $Favori) {
+                $nb++;
+            }
+            $nbproduct[] = $product;
+            $nbproduct[] = $nb;
+            $tbproduct[] = $nbproduct;
+            unset($nbproduct);
+            $nb = 0;
+        }
         // $productfav = $productRepository->findFavoris();
+
         $products = $productRepository->findBestSold();
+        // $products = $productRepository->findAll();
         return $this->render('content/home.html.twig', [
             'products' => $products,
-            // 'productfav' => $productfav,
+            'productfav' => $tbproduct,
         ]);
     }
 

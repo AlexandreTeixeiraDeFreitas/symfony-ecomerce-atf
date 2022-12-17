@@ -4,7 +4,6 @@
 
 {% block body %}
     <h1 style="">Les trois produits les plus vendus</h1>
-    {{dump(products)}}
     <table class="table w3-table-all w3-hoverable" style="">
         <thead>
             <tr>
@@ -22,6 +21,29 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.expcerpt }}</td>
                 <td>{{ product.sold }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h1 style="">Les trois produits favoris</h1>
+    <table class="table w3-table-all w3-hoverable" style="">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Résumé</th>
+                <th>Vendu</th>
+            </tr>
+        </thead>
+        <tbody>
+       {% for product in productfav | slice(0, 3) | sort((b, a) => a.1 <=> b.1) %}
+            <tr>
+                <td>{{ product.0.name }}</td>
+                <td>{{ product.0.expcerpt }}</td>
+                <td>{{ product.0.sold }}</td>
             </tr>
         {% else %}
             <tr>
