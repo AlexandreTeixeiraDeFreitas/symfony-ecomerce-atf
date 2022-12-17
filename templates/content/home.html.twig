@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1 style="">Les trois produits les plus vendus</h1>
-    {# {{dump(products)}} #}
+    {{dump(products)}}
     <table class="table w3-table-all w3-hoverable" style="">
         <thead>
             <tr>
@@ -15,6 +15,9 @@
         </thead>
         <tbody>
        {% for product in products %}
+            {# {% for favori in product.Favorites %}
+                {{dump(favori.id)}}
+            {% endfor %} #}
             <tr>
                 <td>{{ product.name }}</td>
                 <td>{{ product.expcerpt }}</td>

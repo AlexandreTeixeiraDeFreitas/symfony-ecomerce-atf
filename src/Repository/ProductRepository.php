@@ -170,16 +170,16 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findFavoris(): array
-    {
-        //var_dump($category);
-        return $this->createQueryBuilder('p')
-            ->join('n.Favorites','f')
-            ->select('count(f.product)')
-            ->orderBy('f.product', 'DESC')
-            ->setMaxResults(3)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    // public function findFavoris(): array
+    // {
+    //     //var_dump($category);
+    //     return $this->createQueryBuilder('p')
+    //         ->join('Favorites as f')
+    //         // ->select('f.Favorites')
+    //         ->orderBy('f.Favorites', 'DESC')
+    //         ->setMaxResults(3)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
 }

@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -27,7 +27,7 @@ class ProductType extends AbstractType
             ->add('expcerpt', TextareaType::class, [
                 'attr' => ['class' => 'w3-input'],
                 ])
-            ->add('description', TextareaType::class, [
+            ->add('description', CKEditorType::class, [
                 'attr' => ['class' => 'w3-input'],
                 ])
             ->add('quantity', IntegerType::class, [

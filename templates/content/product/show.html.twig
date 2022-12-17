@@ -16,7 +16,7 @@
         <img class="w3-border" style="width:100%" src="{{asset(product.image)}}" alt="{{ product.name }}">
         <p><strong>le résumer: </strong>{{ product.expcerpt }}</p>
         <p><strong>le prix: </strong>{{ product.price }}€</p>
-        <p><strong>description: </strong>{{ product.description }}</p>
+        {{ product.description|raw }}
         <p><strong>Quantity: </strong>{{ product.quantity }}</p>
         <p><strong>Sold: </strong>{{ product.sold }}</p>
         {% if product.statut == 0 %}

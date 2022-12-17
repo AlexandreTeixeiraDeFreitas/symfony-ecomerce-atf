@@ -30,10 +30,11 @@ class ContentController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function home(ProductRepository $productRepository): Response
     {
+        $tbproduct = array();
         // $productfav = $productRepository->findFavoris();
-        $product = $productRepository->findBestSold();
+        $products = $productRepository->findBestSold();
         return $this->render('content/home.html.twig', [
-            'products' => $product,
+            'products' => $products,
             // 'productfav' => $productfav,
         ]);
     }
@@ -50,7 +51,7 @@ class ContentController extends AbstractController
         $brand = $form->getData()->getBrand();
         //var_dump($category);
         //var_dump($seller);
-        $brand = $form->getData()->getBrand();
+
         if ($form->isSubmitted() && $form->isValid()) {
             if ($name == NULL && $seller == NULL && $category == NULL && $brand == NULL){
                 $filtre = $productRepository->findAll();

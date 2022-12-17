@@ -16,7 +16,7 @@
         <img class="w3-border" style="width:100%" src="{{asset(cartproduct.product.image)}}" alt="{{ cartproduct.product.name }}">
         <p><strong>le résumer: </strong>{{ cartproduct.product.expcerpt }}</p>
         <p><strong>le prix: </strong>{{ cartproduct.product.price }}</p>
-        <p><strong>description: </strong>{{ cartproduct.product.description }}</p>
+        {{ cartproduct.product.description|raw }}
         <p><strong>Quantity: </strong>{{ cartproduct.product.quantity }}</p>
         <p><strong>Sold: </strong>{{ cartproduct.product.sold }}</p>
         {% if cartproduct.product.statut == 0 %}
