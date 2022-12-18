@@ -41,5 +41,7 @@
         {% endfor %}
         {# {{dump(total)}} #}
     </div>
-    <a class="btn w3-button mt-3" href="{{ path('app_profil_chekout', {'total': total}) }}">Acheter</a>
+    {% if cartproducts %}
+        <a class="btn w3-button mt-3" href="{{ path('app_profil_chekout', {'total': total}) }}">Acheter</a>
+    {% endif %}
 {% endblock %}
