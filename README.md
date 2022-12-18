@@ -21,3 +21,9 @@
 9 - changer les parameters stripe_sk et stripe_k
 
 10 - et pour Lancer le Serv faire la commande dans le powershell -> symfony server:start ou  symfony serve -d
+
+
+Ps j'ai eu un problème lors de la première connexion avec un compte après le stars du serveur,
+Incohérences avec la class product.
+Mais après cette erreur aucun problème.
+Je ne sais pas si tu auras ce problème.
