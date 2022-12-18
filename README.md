@@ -18,6 +18,6 @@
 
 8 - se connecter à un wifi pour charger le w3css
 
-9 - chamger les parameters stripe_sk et stripe_k
+9 - changer les parameters stripe_sk et stripe_k
 
 10 - et pour Lancer le Serv faire la commande dans le powershell -> symfony server:start ou  symfony serve -d
